@@ -42,7 +42,7 @@ exposure   <- "exp.trait" # name of exposure trait
 instrument <- "prs" # genetic instrument (e.g, polygenic risk score)
 age.sex    <- c("age", "sex") # age and sex variables (if applicable)
 alc.smok   <- c("alcohol", "smoking") # putative pleoitropic vars.
-pcs        <- paste0("pc", 1:20) # first 20 principal componens pc1 ... pc20
+pcs        <- paste0("pc", 1:20) # first 20 principal components pc1 ... pc20
 
 ## runs MR sensitivity analysis
 mr.sense <- mr_sensemakr(outcome = outcome,
