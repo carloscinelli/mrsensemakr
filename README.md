@@ -15,6 +15,8 @@ pleiotropy.](https://www.biorxiv.org/content/10.1101/2020.10.21.347773v1)
 
 ## Development version
 
+<!-- commit -->
+
 To install the development version on GitHub make sure you have the
 package `devtools` installed.
 
@@ -69,7 +71,7 @@ mr.sense
 #>   Partial R2: 0.07%
 #>   RV (alpha = 0.05): 2.27%
 #> 
-#> Bounds on the maximum strength of omitted variables W
+#> Bounds on the maximum explanatory power of omitted variables W, if it were as strong as:
 #>  bound_label r2zw.x r2dw.zx r2yw.zx
 #>  1x alc.smok  0.26%   0.01%   0.02%
 #>       1x pcs  0.25%   0.03%   0.01%

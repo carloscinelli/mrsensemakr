@@ -138,7 +138,7 @@ print.mr_sensemakr <- function(x, digits = 2, ...){
   cat("\n")
   if(!is.null(x$exposure$bounds) & !is.null(x$outcome$bounds)){
     bounds <- cbind(x$exposure$bounds, x$outcome$bounds[,3,drop = F])
-    cat("Bounds on the maximum strength of omitted variables W\n")
+    cat("Bounds on the maximum explanatory power of omitted variables W, if it were as strong as:\n")
     bounds[,2:4] <-  lapply(bounds[,2:4], function(x) paste0(round(x*100, digits = digits), "%"))
     print(bounds, row.names = F)
     cat("\n")
