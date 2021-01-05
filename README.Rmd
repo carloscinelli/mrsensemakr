@@ -1,0 +1,63 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# mrsensemakr
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The R package `mrsensemakr` implements sensitivity analysis tools for Mendelian Randomization, as discussed in [Cinelli et al (2020). Robust Mendelian randomization in the presence of residual population stratification, batch effects and horizontal pleiotropy.](https://www.biorxiv.org/content/10.1101/2020.10.21.347773v1)
+
+## Development version
+
+To install the development version on GitHub make sure you have the package `devtools` installed.
+
+``` r
+# install.packages("devtools")
+devtools::install_github("carloscinelli/mrsensemakr")
+```
+
+CRAN version coming soon.
+
+## Basic usage
+
+
+
+```{r example}
+## loads package
+library(mrsensemakr)
+
+## simulated data example
+data("sim_data")
+
+## create vectors indicating variable names in the data
+outcome    <- "out.trait" # name of outcome trait
+exposure   <- "exp.trait" # name of exposure trait
+instrument <- "prs" # genetic instrument (e.g, polygenic risk score)
+age.sex    <- c("age", "sex") # age and sex variables (if applicable)
+alc.smok   <- c("alcohol", "smoking") # putative pleoitropic vars.
+pcs        <- paste0("pc", 1:20) # first 20 principal componens pc1 ... pc20
+
+## runs MR sensitivity analysis
+mr.sense <- mr_sensemakr(outcome = outcome,
+                         exposure = exposure,
+                         instrument = instrument,
+                         covariates = c(age.sex, alc.smok, pcs), 
+                         data = sim_data, 
+                         benchmark_covariates = list(alc.smok = alc.smok,
+                                                     pcs = pcs))
+## results
+mr.sense
+```
