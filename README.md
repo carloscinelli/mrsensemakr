@@ -17,7 +17,7 @@ pleiotropy.](https://www.biorxiv.org/content/10.1101/2020.10.21.347773v1)
 
 <!-- commit -->
 
-To install the development version on GitHub make sure you have the
+To install the development version on GitHub make sure you have the R
 package `devtools` installed.
 
 ``` r

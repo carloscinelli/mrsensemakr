@@ -24,7 +24,7 @@ The R package `mrsensemakr` implements sensitivity analysis tools for Mendelian 
 
 <!-- commit -->
 
-To install the development version on GitHub make sure you have the package `devtools` installed.
+To install the development version on GitHub make sure you have the R package `devtools` installed.
 
 ``` r
 # install.packages("devtools")
@@ -37,7 +37,7 @@ CRAN version coming soon.
 
 
 
-```{r example}
+```{r example, dpi = 600}
 ## loads package
 library(mrsensemakr)
 
