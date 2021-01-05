@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# mrsensemakr
+# MR-SENSEMAKR
 
 <!-- badges: start -->
 
@@ -52,7 +52,7 @@ mr.sense <- mr_sensemakr(outcome = outcome,
                          data = sim_data, 
                          benchmark_covariates = list(alc.smok = alc.smok,
                                                      pcs = pcs))
-## results
+## print results
 mr.sense
 #> Sensitivity Analysis for Mendelian Randomization (MR)
 #>  Exposure: exp.trait
@@ -75,4 +75,14 @@ mr.sense
 #>  bound_label r2zw.x r2dw.zx r2yw.zx
 #>  1x alc.smok  0.26%   0.01%   0.02%
 #>       1x pcs  0.25%   0.03%   0.01%
+
+
+## sensitivity contour plots
+plot(mr.sense, 
+     benchmark_covariates = list(alc.smok = alc.smok,
+                                 pcs = pcs),
+     k = list(alc.smok = 25,
+              pcs = 35))
 ```
+
+<img src="man/figures/README-example-1.png" width="100%" />

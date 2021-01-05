@@ -62,7 +62,7 @@ mr_sensemakr <- function(outcome,
   rf.form <- make_formula(y = outcome,  x = c(instrument, covariates))
   reduced.form <- lm(rf.form, data = data)
 
-  info <- list(outcome = outcome,
+  out$info <- list(outcome = outcome,
                exposure = exposure,
                instrument = instrument,
                covariates = covariates)
@@ -100,7 +100,6 @@ mr_sensemakr <- function(outcome,
 
     benchmark_covariates <- lapply(benchmark_covariates,
                                    clean_benchmarks,
-                                   data = data,
                                    model = first.stage)
 
     fs.bounds <- sensemakr::ovb_partial_r2_bound(model = first.stage,
@@ -146,11 +145,11 @@ print.mr_sensemakr <- function(x, digits = 2, ...){
 }
 
 
-clean_benchmarks <- function(bench, data, model){
-  classes <- sapply(data[bench], class)
+clean_benchmarks <- function(bench, model){
+  classes <- sapply(model$model[bench], class)
   change  <- which(classes %in% c("factor", "character"))
   for(i in change){
-    bench <- c(bench, unique(paste0(bench[i], data[[bench[i]]])))
+    bench <- c(bench, unique(paste0(bench[i], model$model[[bench[i]]])))
   }
   intersect(bench,names(coef(model)))
 }
@@ -186,6 +185,8 @@ multiple_bounds <- function(model,
   if(!check_names_match){
     stop("names of 'k' should match names of 'benchmark_covariates'")
   }
+
+
   bounds <- list()
   for(i in bench_names){
     bounds[[i]] <- sensemakr::ovb_bounds(model = model,
@@ -194,6 +195,8 @@ multiple_bounds <- function(model,
                                          kd = k[[i]],
                                          alpha = alpha)
   }
+  bounds <- do.call("rbind", bounds)
+  row.names(bounds) <- NULL
   return(bounds)
 }
 
