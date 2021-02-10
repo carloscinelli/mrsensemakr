@@ -7,6 +7,7 @@ ils <- function(fs, rf, instrument, ...){
 
 
 #'@importFrom sensemakr model_helper
+#'@importFrom stats as.formula coef cor lm pt qt resid
 ils.lm <- function(fs, rf, instrument, ...){
   summ.fs <- model_helper(model = fs, covariates = instrument)
   summ.rf <- model_helper(model = rf, covariates = instrument)

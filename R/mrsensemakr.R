@@ -39,6 +39,17 @@ print.sense_trait <- function(x, digits = 4, ...){
 
 ##' MR-sensemakr
 ##'
+##'
+##'@param outcome A character vector with the name of the outcome trait.
+##'@param exposure A character vector with the name of the exposure trait.
+##'@param instrument A character vector with the name of the genetic instrument.
+##'@param covariates A character vector with the name of the control covariates, such as age, sex, genomic principal components, batch effect dummies and putative pleiotropic pathways.
+##'@param data An object of the class data.frame containing the variables used in the analysis.
+##'@param benchmark_covariates The user has two options: (i) character vector of the names of covariates that will be used to bound the plausible strength of the unobserved confounders. Each variable will be considered separately; (ii) a named list with character vector names of covariates that will be used, as a group, to bound the plausible strength of the unobserved confounders. The names of the list will be used for the benchmark labels.
+##'
+##'@param k numeric vector. Parameterizes how many times stronger residual biases are related to the treatment and the outcome in comparison to the observed benchmark covariates.
+##'@param alpha significance level
+##'
 ##'@export
 mr_sensemakr <- function(outcome,
                          exposure,

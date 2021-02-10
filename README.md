@@ -18,10 +18,13 @@ pleiotropy.](https://www.biorxiv.org/content/10.1101/2020.10.21.347773v1)
 <!-- commit -->
 
 To install the development version on GitHub make sure you have the R
-package `devtools` installed.
+package `devtools` installed. Also make sure to have the latest version
+of `sensemakr` [(link)](https://github.com/carloscinelli/sensemakr)
+installed.
 
 ``` r
 # install.packages("devtools")
+devtools::install_github("carloscinelli/sensemakr")
 devtools::install_github("carloscinelli/mrsensemakr")
 ```
 
