@@ -1,0 +1,156 @@
+---
+title: "simulations"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{simulations}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+# install.packages("tidyverse")
+# install.packages("sensemakr")
+# install.packages("MendelianRandomization")
+# install.packages("paramtest")
+# devtools::install_github("rondolab/MR-PRESSO")
+
+
+# cleans workspace
+rm(list =ls())
+
+# loads packages
+library(sensemakr)
+library(MendelianRandomization)
+library(MRPRESSO)
+library(paramtest)
+
+create_data <- function(n = 1e5, 
+                        m = 90, 
+                        phi, 
+                        beta, 
+                        delta,
+                        tau   = 0,
+                        gamma = .1, 
+                        psi =1){
+  G <- rbinom(n*m, 2,prob = 1/3)
+  dim(G) <- c(n,m)
+  colnames(G) <- paste0("g",1:m)
+  w  <- c(G %*% phi + rnorm(n))
+  x  <- c(G %*% delta + rnorm(n))
+  u  <- rnorm(n) 
+  d  <- c(G %*% beta + psi*w + psi*x + u + rnorm(n))
+  y  <- c(tau*d + gamma*w + gamma*x + u + rnorm(n))
+  data <- list(y = y,d = d,x = x,w = w, G= G)
+  return(data)
+}
+
+get_betas <- function(y, d, G){
+  md <- lm(d ~ G)
+  my <- lm(y ~ G)
+  coef.md <- coef(summary(md))
+  coef.my <- coef(summary(my))
+  bd   <- coef.md[-1,1]
+  bdse <- coef.md[-1,2]
+  by   <- coef.my[-1,1]
+  byse <- coef.my[-1,2]
+  data <- data.frame(bd, by, bdse, byse)
+  return(data)
+}
+
+sim <- function(nsim, n = 100, m= 90, gamma = 0.1, tau = 0,  presso = FALSE){
+  
+  # initialize output
+  out       <- data.frame(n = n)
+  out$gamma <- gamma
+  out$tau   <- tau
+  out$m     <- m
+  
+  phi   <- runif(m, .01, .05)
+  beta  <- runif(m, .01, .05)
+  delta <- runif(m, .01, .05)
+  gamma <- gamma
+  
+  # two samples of size n
+  data1 <- create_data(n = n, phi = phi, beta = beta, delta = delta, tau = tau, gamma = gamma)
+  b1    <- with(data1, get_betas(y, d, G))
+  data2 <- create_data(n = n, phi = phi, beta = beta, delta = delta, tau = tau, gamma = gamma)
+  b2    <- with(data2, get_betas(y, d, G))
+  
+  # MR input
+  input.mr   <- mr_input(by = b1$by, byse = b1$byse, bx = b2$bd, bxse = b2$bdse)
+  
+  
+  # MR IVW
+  output.ivw <- mr_ivw(input.mr)
+  out$p.ivw  <- output.ivw@Pvalue
+  
+  # MR egger
+  output.egger <- mr_egger(input.mr)
+  out$p.egger  <- output.egger@Causal.pval
+  
+  if(presso){
+    # MR Presso
+    res           <- data.frame(by = b1$by, byse = b1$byse, bx = b2$bd, bxse = b2$bdse)
+    output.presso <- mr_presso(BetaOutcome = "by", BetaExposure = "bx", SdOutcome = "byse", SdExposure = "bxse", 
+                               OUTLIERtest = T, DISTORTIONtest = T, data = res, NbDistribution = 1000,  
+                               SignifThreshold = 0.05)
+    presso.p.values <- output.presso$`Main MR results`$`P-value`
+    p.presso <- presso.p.values[2]
+    if(is.na(p.presso)){
+      p.presso <- presso.p.values[1]
+    }
+    out$p.presso <-  p.presso 
+  }
+  
+  
+  # MR PRS
+  
+  data2$prs <- data2$G %*% b1$bd
+  rf        <- with(data2, lm(y ~ prs + x))
+  
+  ## sensemakr
+  
+  sense.out <- sensemakr(rf, treatment = "prs", benchmark_covariates = "x", kd = 1)
+  rv        <- sense.out$sensitivity_stats[,"rv_qa"]
+  r2yz      <- sense.out$sensitivity_stats[,"r2yd.x"]
+  or_t      <- sense.out$sensitivity_stats$t_statistic
+  adj_t     <- sense.out$bounds$adjusted_t
+  s.t       <- sign(or_t)
+  s.adj_t   <- sign(adj_t)
+  
+  if(s.t != s.adj_t){
+    p.bench <- 1
+  } else {
+    p.bench <- pt(abs(adj_t), df = n, lower.tail = F)*2
+  }
+  out$p.bench  <- p.bench
+  out$rv       <- rv
+  out$r2yz     <- r2yz
+  out$or_t     <- or_t
+  out$adj_t    <- adj_t
+  return(out)
+}
+
+#### uncomment the code below to run the simulation 
+#### it can take a long time
+
+## simulate once to see how long it takes
+# system.time(pop<- sim(1, n = 1e5, presso = T, gamma = 0.02, tau = 0.1))
+
+## now simulate as many times as you want, with different parameter values
+## system.time({
+#   sim.out <- grid_search(sim, 
+#                          n.iter = 1000, 
+#                          params = list(n = c(1e5, 2e5, 3e5, 4e5, 5e5), gamma = 0.03, tau = c(0, 0.1), presso = T), 
+#                          parallel = "multicore", 
+#                          ncpus = 32
+#   )
+# })
+```
