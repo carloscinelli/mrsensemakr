@@ -72,3 +72,7 @@ plot(mr.sense,
      k = list(alc.smok = 25,
               pcs = 35))
 ```
+
+## Simulations
+
+Code to reproduce the simulations of the paper can be found in the vignettes folder.

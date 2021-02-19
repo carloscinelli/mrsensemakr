@@ -89,3 +89,8 @@ plot(mr.sense,
 ```
 
 <img src="man/figures/README-example-1.png" width="100%" />
+
+## Simulations
+
+Code to reproduce the simulations of the paper can be found in the
+vignettes folder.
