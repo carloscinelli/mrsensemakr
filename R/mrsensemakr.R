@@ -79,6 +79,7 @@ print.sense_trait <- function(x, digits = 4, ...){
 ##'plot(mr.sense,
 ##'     benchmark_covariates = list(alc.smok = alc.smok, pcs = pcs),
 ##'     k = list(alc.smok = 25, pcs = 35))
+##'@importFrom stats na.omit
 ##'@export
 mr_sensemakr <- function(outcome,
                          exposure,

@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r setup, eval=FALSE}
 # install.packages("tidyverse")
 # install.packages("sensemakr")
 # install.packages("MendelianRandomization")
