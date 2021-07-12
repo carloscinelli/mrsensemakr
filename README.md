@@ -5,6 +5,10 @@
 
 <!-- badges: start -->
 
+[![Codecov test
+coverage](https://codecov.io/gh/carloscinelli/mrsensemakr/branch/master/graph/badge.svg)](https://codecov.io/gh/carloscinelli/mrsensemakr?branch=master)
+[![Travis build
+status](https://travis-ci.com/carloscinelli/mrsensemakr.svg?branch=master)](https://travis-ci.com/carloscinelli/mrsensemakr)
 <!-- badges: end -->
 
 The R package `mrsensemakr` implements sensitivity analysis tools for
@@ -60,7 +64,8 @@ mr.sense
 #> Sensitivity Analysis for Mendelian Randomization (MR)
 #>  Exposure: exp.trait
 #>  Outcome: out.trait
-#>  Genetic instrument: prs
+#>  Genetic Instrument: prs
+#>  Missing Data: No missing data found.
 #> 
 #> Traditional MR results (2SLS)
 #>   MR Estimate (95% CI): 0.227 (0.192 - 0.262)
@@ -75,9 +80,9 @@ mr.sense
 #>   RV (alpha = 0.05): 2.27%
 #> 
 #> Bounds on the maximum explanatory power of omitted variables W, if it were as strong as:
-#>  bound_label r2zw.x r2dw.zx r2yw.zx
-#>  1x alc.smok  0.26%   0.01%   0.02%
-#>       1x pcs  0.25%   0.03%   0.01%
+#>  bound_label r2zw.x r2dw.zx r2yw.zx adjusted_t_exposure adjusted_t_outcome
+#>  1x alc.smok  0.26%   0.01%   0.02%            54.01079           11.89505
+#>       1x pcs  0.25%   0.03%   0.01%            53.79732           12.00196
 
 
 ## sensitivity contour plots

@@ -32,8 +32,8 @@ test_that("negative value plot", {
   ## print results
   mr.sense
   ## sensitivity contour plots
-  expect_success(plot(mr.sense,
-                      benchmark_covariates = list(alc.smok = alc.smok, pcs = pcs),
-                      k = list(alc.smok = 25, pcs = 35)))
+  plot(mr.sense,
+       benchmark_covariates = list(alc.smok = alc.smok, pcs = pcs),
+       k = list(alc.smok = 25, pcs = 35))
 
 })

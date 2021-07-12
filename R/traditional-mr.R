@@ -122,17 +122,17 @@ mr_estimates <- function(fs,
   return(out)
 }
 
-print.trad.mr <- function(x, round  = 3,...){
+print.trad.mr <- function(x, digits  = 3,...){
   cat("Traditional MR results (2SLS)\n")
 
   if(is.null(x)){
     "Both exposure and outcome data are needed for full MR estimates\n"
   } else {
-  cat("  MR Estimate (", round((1-x$alpha)*100,round), "% CI): ",
-      round(x$estimate, round),
+  cat("  MR Estimate (", round((1-x$alpha)*100,digits), "% CI): ",
+      round(x$estimate, digits = digits),
       " (",
-      round(x$ci.low, round), " - ",
-      round(x$ci.up, round),
+      round(x$ci.low, digits = digits), " - ",
+      round(x$ci.up, digits = digits),
       ")\n",
       "  P-value: ",
       ifelse(x$p.value < 2e-16, " < 2x10^16", x$p.value),

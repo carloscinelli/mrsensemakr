@@ -45,7 +45,7 @@ print.sense_trait <- function(x, digits = 4, ...){
 ##'@param instrument A character vector with the name of the genetic instrument.
 ##'@param covariates A character vector with the name of the control covariates, such as age, sex, genomic principal components, batch effect dummies and putative pleiotropic pathways.
 ##'@param data An object of the class data.frame containing the variables used in the analysis.
-##'@param benchmark_covariates The user has two options: (i) character vector of the names of covariates that will be used to bound the plausible strength of the unobserved confounders. Each variable will be considered separately; (ii) a named list with character vector names of covariates that will be used, as a group, to bound the plausible strength of the unobserved confounders. The names of the list will be used for the benchmark labels.
+##'@param benchmark_covariates Covariates for benchmarking. Must be a subset of the \code{covariates} argument. The user has two options: (i) character vector of the names of covariates that will be used to bound the plausible strength of the unobserved confounders. Each variable will be considered separately; (ii) a named list with character vector names of covariates that will be used, as a group, to bound the plausible strength of the unobserved confounders. The names of the list will be used for the benchmark labels.
 ##'
 ##'@param k numeric vector. Parameterizes how many times stronger residual biases are related to the treatment and the outcome in comparison to the observed benchmark covariates.
 ##'@param alpha significance level
@@ -105,9 +105,20 @@ mr_sensemakr <- function(outcome,
   # check names on data.frame
   all.names <- unique(unlist(c(outcome, exposure,instrument, covariates, benchmark_covariates)))
   data.names <- names(data)
-  ok <- which(all.names %in% data.names)
-  if (length(ok)!= length(all.names)){
-    stop(paste("variables", paste(all.names[-ok], collapse = ", "), "were not found"))
+  not.ok <- which(!all.names %in% data.names)
+  if (length(not.ok) > 0){
+    stop(paste("variables", paste(all.names[not.ok], collapse = ", "), "were not found"))
+  }
+
+  # check benchmark and covariates
+  benchmark_covariates_check <- unique(unlist(benchmark_covariates))
+  if (is.null(covariates) & !is.null(benchmark_covariates_check)){
+    stop("'benchmark_covariates' must be a subset of 'coviates:' argument `covariates` not provided.")
+  }
+  bench.not.ok <- which(!benchmark_covariates_check %in% covariates)
+  if( length(bench.not.ok) > 0){
+    stop("'benchmark_covariates' must be a subset of 'coviates. Variables not found: ",
+         paste(benchmark_covariates_check[bench.not.ok], collapse = ", "))
   }
 
   # output list
@@ -145,11 +156,14 @@ mr_sensemakr <- function(outcome,
                                    clean_benchmarks,
                                    model = first.stage)
 
-    fs.bounds <- sensemakr::ovb_partial_r2_bound(model = first.stage,
-                                                 treatment = instrument,
-                                                 benchmark_covariates = benchmark_covariates,
-                                                 kd = k)
+    fs.bounds <- sensemakr::ovb_bounds(model = first.stage,
+                                       treatment = instrument,
+                                       benchmark_covariates = benchmark_covariates,
+                                       kd = k,
+                                       alpha = alpha)
+    fs.bounds <- fs.bounds[c(1,2,3,7)]
     names(fs.bounds)[2:3] <- c("r2zw.x", "r2dw.zx")
+    names(fs.bounds)[4] <- c("adjusted_t_exposure")
     out$exposure$bounds <- fs.bounds
   }
 
@@ -175,11 +189,13 @@ mr_sensemakr <- function(outcome,
                                    clean_benchmarks,
                                    model = reduced.form)
 
-    rf.bounds <- sensemakr::ovb_partial_r2_bound(model = reduced.form,
-                                                 treatment = instrument,
-                                                 benchmark_covariates = benchmark_covariates,
-                                                 kd = k)
+    rf.bounds <- sensemakr::ovb_bounds(model = reduced.form,
+                                       treatment = instrument,
+                                       benchmark_covariates = benchmark_covariates,
+                                       kd = k, alpha = alpha)
+    rf.bounds <- rf.bounds[c(1,2,3,7)]
     names(rf.bounds)[2:3] <- c("r2zw.x", "r2yw.zx")
+    names(rf.bounds)[4] <- c("adjusted_t_outcome")
     out$outcome$bounds <- rf.bounds
   }
 
@@ -204,7 +220,7 @@ print.mr_sensemakr <- function(x, digits = 2, ...){
   cat("Sensitivity Analysis for Mendelian Randomization (MR)\n", sep ="")
   cat(" Exposure: ", x$info$exposure, "\n",
       " Outcome: ", x$info$outcome, "\n",
-      " Genetic instrument: ", x$info$instrument,"\n",
+      " Genetic Instrument: ", x$info$instrument,"\n",
       " Missing Data: ", x$info$NAs,"\n",
       sep ="")
   cat("\n")
@@ -215,7 +231,10 @@ print.mr_sensemakr <- function(x, digits = 2, ...){
   print(x$outcome$sensitivity, digits = digits)
   cat("\n")
   if(!is.null(x$exposure$bounds) & !is.null(x$outcome$bounds)){
-    bounds <- cbind(x$exposure$bounds, x$outcome$bounds[,3,drop = F])
+    bounds <- cbind(x$exposure$bounds[,1:3, drop = F],
+                    x$outcome$bounds[,3,drop = F],
+                    x$exposure$bounds[,4,drop = F],
+                    x$outcome$bounds[,4,drop = F])
     cat("Bounds on the maximum explanatory power of omitted variables W, if it were as strong as:\n")
     bounds[,2:4] <-  lapply(bounds[,2:4], function(x) paste0(round(x*100, digits = digits), "%"))
     print(bounds, row.names = F)

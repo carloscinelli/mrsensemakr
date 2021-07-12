@@ -26,7 +26,7 @@ mr_sensemakr(
 
 \item{data}{An object of the class data.frame containing the variables used in the analysis.}
 
-\item{benchmark_covariates}{The user has two options: (i) character vector of the names of covariates that will be used to bound the plausible strength of the unobserved confounders. Each variable will be considered separately; (ii) a named list with character vector names of covariates that will be used, as a group, to bound the plausible strength of the unobserved confounders. The names of the list will be used for the benchmark labels.}
+\item{benchmark_covariates}{Covariates for benchmarking. Must be a subset of the \code{covariates} argument. The user has two options: (i) character vector of the names of covariates that will be used to bound the plausible strength of the unobserved confounders. Each variable will be considered separately; (ii) a named list with character vector names of covariates that will be used, as a group, to bound the plausible strength of the unobserved confounders. The names of the list will be used for the benchmark labels.}
 
 \item{k}{numeric vector. Parameterizes how many times stronger residual biases are related to the treatment and the outcome in comparison to the observed benchmark covariates.}
 
