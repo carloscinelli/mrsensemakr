@@ -128,7 +128,7 @@ print.trad.mr <- function(x, round  = 3,...){
   if(is.null(x)){
     "Both exposure and outcome data are needed for full MR estimates\n"
   } else {
-  cat("  MR Estimate (95% CI): ",
+  cat("  MR Estimate (", round((1-x$alpha)*100,round), "% CI): ",
       round(x$estimate, round),
       " (",
       round(x$ci.low, round), " - ",
