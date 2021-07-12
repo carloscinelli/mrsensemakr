@@ -16,6 +16,10 @@ plot.mr_sensemakr <- function(x,
                   outcome = x$outcome$model,
                   exposure = x$exposure$model)
 
+  t.value <- coef(summary(model))[x$info$instrument, "t value"]
+  dof     <- model$df.residual
+  t.thr   <- abs(qt(alpha/2, df = dof - 1))*sign(t.value)
+
   rv <- x[[type]]$sensitivity$rv
 
     if(!is.null(benchmark_covariates)){
@@ -61,11 +65,12 @@ plot.mr_sensemakr <- function(x,
   sensemakr::ovb_contour_plot(model = model,
                               treatment = x$mr$instrument,
                               sensitivity.of = "t-value",
+                              t.threshold = t.thr,
                               xlab = xlab,
                               ylab = ylab,
                               lim = lim.x,
                               lim.y = lim.y,
-                              nlevels = nlevels)
+                              nlevels = nlevels) -> contour.out
 
   if(!is.null(benchmark_covariates)){
     sensemakr::add_bound_to_contour(bounds, treatment = x$mr$instrument)

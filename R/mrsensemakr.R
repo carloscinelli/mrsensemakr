@@ -50,6 +50,35 @@ print.sense_trait <- function(x, digits = 4, ...){
 ##'@param k numeric vector. Parameterizes how many times stronger residual biases are related to the treatment and the outcome in comparison to the observed benchmark covariates.
 ##'@param alpha significance level
 ##'
+##'@examples
+## loads package
+##'library(mrsensemakr)
+##'
+##'## simulated data example
+##'data("sim_data")
+##'
+##'## create vectors indicating variable names in the data
+##'outcome    <- "out.trait" # name of outcome trait
+##'exposure   <- "exp.trait" # name of exposure trait
+##'instrument <- "prs" # genetic instrument (e.g, polygenic risk score)
+##'age.sex    <- c("age", "sex") # age and sex variables (if applicable)
+##'alc.smok   <- c("alcohol", "smoking") # putative pleoitropic vars.
+##'pcs        <- paste0("pc", 1:20) # first 20 principal components pc1 ... pc20
+##'
+##'## runs MR sensitivity analysis
+##'mr.sense <- mr_sensemakr(outcome = outcome,
+##'                         exposure = exposure,
+##'                         instrument = instrument,
+##'                         covariates = c(age.sex, alc.smok, pcs),
+##'                         data = sim_data,
+##'                         benchmark_covariates = list(alc.smok = alc.smok,
+##'                                                     pcs = pcs))
+##'## print results
+##'mr.sense
+##'## sensitivity contour plots
+##'plot(mr.sense,
+##'     benchmark_covariates = list(alc.smok = alc.smok, pcs = pcs),
+##'     k = list(alc.smok = 25, pcs = 35))
 ##'@export
 mr_sensemakr <- function(outcome,
                          exposure,
@@ -62,51 +91,53 @@ mr_sensemakr <- function(outcome,
 
   # coerce to data.frame
   data <- as.data.frame(data)
+
+  # remove NAs
+  any.na <- any(is.na(data))
+  if(any.na){
+    data <- na.omit(data)
+    warning("Missing values (NA) were found and were omitted from the analysis.")
+    NAs <- "Missing data removed from analysis."
+  } else {
+    NAs <- "No missing data found."
+  }
+
+  # check names on data.frame
+  all.names <- unique(unlist(c(outcome, exposure,instrument, covariates, benchmark_covariates)))
+  data.names <- names(data)
+  ok <- which(all.names %in% data.names)
+  if (length(ok)!= length(all.names)){
+    stop(paste("variables", paste(all.names[-ok], collapse = ", "), "were not found"))
+  }
+
+  # output list
   out <- list()
 
+  # info
+  out$info     <- list(outcome    = outcome,
+                       exposure   = exposure,
+                       instrument = instrument,
+                       covariates = covariates,
+                       NAs = NAs)
+
+  # check if either exposure or outcome was provided
+  if (is.null(outcome) | is.null(exposure)){
+    stop("Both the outcome trait and exposure trait must be provided")
+  }
+
   # first stage
-  fs.form <- make_formula(y = exposure, x = c(instrument, covariates))
-  first.stage <- lm(fs.form, data = data)
-
-
-  # reduced form
-  rf.form <- make_formula(y = outcome,  x = c(instrument, covariates))
-  reduced.form <- lm(rf.form, data = data)
-
-  out$info <- list(outcome = outcome,
-               exposure = exposure,
-               instrument = instrument,
-               covariates = covariates)
-
-  # traditional MR
-  trad.mr <- mr_estimates(fs = first.stage,
-                          rf = reduced.form,
-                          exposure = exposure,
-                          outcome  = outcome,
-                          instrument = instrument,
-                          alpha = alpha)
-  out$mr <- trad.mr
-
+  fs.form      <- make_formula(y = exposure, x = c(instrument, covariates))
+  first.stage  <- lm(fs.form, data = data)
 
   # first stage sensitivity
-  fs.sense <- sense_trait(model = first.stage,
-                          instrument = instrument,
-                          trait = exposure,
-                          alpha = alpha)
+  fs.sense     <- sense_trait(model      = first.stage,
+                              instrument = instrument,
+                              trait      = exposure,
+                              alpha      = alpha)
 
-  out$exposure <- list(model = first.stage,
+  out$exposure <- list(model       = first.stage,
                        sensitivity = fs.sense)
 
-  # reduced form sensitivity
-  rf.sense <- sense_trait(model = reduced.form,
-                          instrument = instrument,
-                          trait = outcome,
-                          alpha = alpha)
-
-  out$outcome <- list(model = reduced.form,
-                       sensitivity = rf.sense)
-
-  # bounds
   if(!is.null(benchmark_covariates)){
 
     benchmark_covariates <- lapply(benchmark_covariates,
@@ -119,6 +150,29 @@ mr_sensemakr <- function(outcome,
                                                  kd = k)
     names(fs.bounds)[2:3] <- c("r2zw.x", "r2dw.zx")
     out$exposure$bounds <- fs.bounds
+  }
+
+
+  # reduced form
+
+  rf.form      <- make_formula(y = outcome,  x = c(instrument, covariates))
+  reduced.form <- lm(rf.form, data = data)
+
+
+  # reduced form sensitivity
+  rf.sense     <- sense_trait(model      = reduced.form,
+                              instrument = instrument,
+                              trait      = outcome,
+                              alpha      = alpha)
+
+  out$outcome  <- list(model       = reduced.form,
+                       sensitivity = rf.sense)
+
+  if(!is.null(benchmark_covariates)){
+
+    benchmark_covariates <- lapply(benchmark_covariates,
+                                   clean_benchmarks,
+                                   model = reduced.form)
 
     rf.bounds <- sensemakr::ovb_partial_r2_bound(model = reduced.form,
                                                  treatment = instrument,
@@ -126,8 +180,19 @@ mr_sensemakr <- function(outcome,
                                                  kd = k)
     names(rf.bounds)[2:3] <- c("r2zw.x", "r2yw.zx")
     out$outcome$bounds <- rf.bounds
-
   }
+
+
+
+  # traditional MR
+
+  trad.mr <- mr_estimates(fs = first.stage,
+                          rf = reduced.form,
+                          exposure = exposure,
+                          outcome  = outcome,
+                          instrument = instrument,
+                          alpha = alpha)
+  out$mr <- trad.mr
 
   class(out) <- "mr_sensemakr"
   return(out)
@@ -136,9 +201,11 @@ mr_sensemakr <- function(outcome,
 ##'@export
 print.mr_sensemakr <- function(x, digits = 2, ...){
   cat("Sensitivity Analysis for Mendelian Randomization (MR)\n", sep ="")
-  cat(" Exposure: ", x$mr$exposure, "\n",
-      " Outcome: ", x$mr$outcome, "\n",
-      " Genetic instrument: ", x$mr$instrument,"\n", sep ="")
+  cat(" Exposure: ", x$info$exposure, "\n",
+      " Outcome: ", x$info$outcome, "\n",
+      " Genetic instrument: ", x$info$instrument,"\n",
+      " Missing Data: ", x$info$NAs,"\n",
+      sep ="")
   cat("\n")
   print(x$mr)
   cat("\n")
