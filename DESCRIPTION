@@ -1,7 +1,7 @@
 Package: mrsensemakr
 Type: Package
 Title: Sensitivity Analysis Tools for Mendelian Randomization 
-Version: 0.1.9
+Version: 0.2.9
 Author: Carlos Cinelli,
 Maintainer: The package maintainer <yourself@somewhere.net>
 Description: The R package mrsensemakr implements sensitivity analysis tools for Mendelian Randomization.
