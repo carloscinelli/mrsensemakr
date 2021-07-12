@@ -56,6 +56,7 @@ print.sense_trait <- function(x, digits = 4, ...){
 ##'
 ##'## simulated data example
 ##'data("sim_data")
+##'str(sim_data)
 ##'
 ##'## create vectors indicating variable names in the data
 ##'outcome    <- "out.trait" # name of outcome trait

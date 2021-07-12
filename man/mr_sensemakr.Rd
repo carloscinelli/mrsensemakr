@@ -40,6 +40,7 @@ library(mrsensemakr)
 
 ## simulated data example
 data("sim_data")
+str(sim_data)
 
 ## create vectors indicating variable names in the data
 outcome    <- "out.trait" # name of outcome trait
