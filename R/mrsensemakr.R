@@ -51,12 +51,11 @@ print.sense_trait <- function(x, digits = 4, ...){
 ##'@param alpha significance level
 ##'
 ##'@examples
-## loads package
+##'# loads package
 ##'library(mrsensemakr)
 ##'
 ##'## simulated data example
 ##'data("sim_data")
-##'str(sim_data)
 ##'
 ##'## create vectors indicating variable names in the data
 ##'outcome    <- "out.trait" # name of outcome trait
@@ -80,7 +79,7 @@ print.sense_trait <- function(x, digits = 4, ...){
 ##'plot(mr.sense,
 ##'     benchmark_covariates = list(alc.smok = alc.smok, pcs = pcs),
 ##'     k = list(alc.smok = 25, pcs = 35))
-##'@importFrom stats na.omit
+##'@import stats sensemakr
 ##'@export
 mr_sensemakr <- function(outcome,
                          exposure,
