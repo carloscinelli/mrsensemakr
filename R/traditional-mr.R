@@ -1,6 +1,6 @@
 # given first stage and reduced form estimates, produces the ILS estimates
 
-
+#' @export
 ils <- function(fs, rf, instrument, ...){
   UseMethod("ils")
 }
@@ -19,7 +19,7 @@ ils.lm <- function(fs, rf, instrument, ...){
   return(estimates)
 }
 
-
+#' @export
 ils_estimates <- function(fs.coef, rf.coef, fs.se, rf.se, rho){
 
   iv.estimate <- ils_coef(fs.coef = fs.coef, rf.coef = rf.coef)
@@ -34,13 +34,13 @@ ils_estimates <- function(fs.coef, rf.coef, fs.se, rf.se, rho){
              se = iv.se)
 }
 
-
+#' @export
 ils_coef <- function(fs.coef, rf.coef){
   tau <- rf.coef/fs.coef
   return(tau)
 }
 
-
+#' @export
 ils_var <- function(fs.coef, rf.coef, fs.se, rf.se, rho){
   tau <- ils_coef(fs.coef = fs.coef, rf.coef = rf.coef)
   fs.var <- fs.se^2
@@ -49,7 +49,7 @@ ils_var <- function(fs.coef, rf.coef, fs.se, rf.se, rho){
   return(var.tau)
 }
 
-
+#' @export
 ils_se <-  function(fs.coef, rf.coef, fs.se, rf.se, rho){
   se.tau <- sqrt(ils_var(fs.coef = fs.coef,
                          rf.coef = rf.coef,
@@ -63,16 +63,17 @@ ils_se <-  function(fs.coef, rf.coef, fs.se, rf.se, rho){
 
 # Get summary statistics from RF and FS regressions -----------------------
 
-
+#' @export
 rho <- function(fs, rf) cor(resid(fs), resid(rf))
 
 ## These functions get all the data we need for making inference and performing sensitivity analysis
 
+#' @export
 iv_model_helper <- function(...){
   UseMethod("iv_model_helper")
 }
 
-
+#' @export
 iv_model_helper.lm <- function(fs, rf, instrument, ...){
 
   summ.fs <- sensemakr::model_helper(model = fs, covariates = instrument)
@@ -91,7 +92,7 @@ iv_model_helper.lm <- function(fs, rf, instrument, ...){
 }
 
 
-
+#' @export
 mr_estimates <- function(fs,
                          rf,
                          exposure = exposure,
@@ -121,6 +122,7 @@ mr_estimates <- function(fs,
   return(out)
 }
 
+#' @export
 print.trad.mr <- function(x, digits  = 3,...){
   cat("Traditional MR results (2SLS)\n")
 
