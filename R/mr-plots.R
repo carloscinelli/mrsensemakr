@@ -4,7 +4,7 @@ plot.mr_sensemakr <- function(x,
                               type = c("outcome", "exposure"),
                               benchmark_covariates = NULL,
                               k = 1,
-                              alpha = 0.05,
+                              alpha = NULL,
                               nlevels = 7,
                               lim.x = NULL,
                               lim.y = NULL,
@@ -17,8 +17,16 @@ plot.mr_sensemakr <- function(x,
                   exposure = x$exposure$model)
 
   t.value <- coef(summary(model))[x$info$instrument, "t value"]
+  if(is.null(alpha)){
+    alpha <- x$info$alpha
+  }
+  if(!(alpha >= 0 & alpha <= 1)){
+    stop("alpha must be between 0 and 1")
+  }
   dof     <- model$df.residual
   t.thr   <- abs(qt(alpha/2, df = dof - 1))*sign(t.value)
+
+
 
   rv <- x[[type]]$sensitivity$rv
 

@@ -28,12 +28,12 @@ test_that("negative value plot", {
                            covariates = c(age.sex, alc.smok, pcs),
                            data = sim_data,
                            benchmark_covariates = list(alc.smok = alc.smok,
-                                                       pcs = pcs))
+                                                       pcs = pcs), alpha = 0.1)
   ## print results
   mr.sense
   ## sensitivity contour plots
-  expect_ plot(mr.sense,
-       benchmark_covariates = list(alc.smok = alc.smok, pcs = pcs),
-       k = list(alc.smok = 25, pcs = 35))
+  expect_success(plot(mr.sense,
+                      benchmark_covariates = list(alc.smok = alc.smok, pcs = pcs),
+                      k = list(alc.smok = 25, pcs = 35)))
 
 })

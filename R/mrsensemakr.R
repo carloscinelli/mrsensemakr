@@ -118,6 +118,7 @@ mr_sensemakr <- function(outcome,
                        exposure   = exposure,
                        instrument = instrument,
                        covariates = covariates,
+                       alpha= alpha,
                        NAs = NAs)
 
   # check if either exposure or outcome was provided
