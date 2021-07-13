@@ -1,4 +1,3 @@
-#' @export
 make_formula <- function(y,x){
   x   <- paste(x, collapse = " + ")
   yx  <- paste(y, x, sep = " ~ ")
@@ -6,7 +5,6 @@ make_formula <- function(y,x){
 }
 
 
-#' @export
 sense_trait <- function(model,
                         instrument,
                         trait,
@@ -23,7 +21,6 @@ sense_trait <- function(model,
 }
 
 
-##'@export
 print.sense_trait <- function(x, digits = 4, ...){
   cat("Sensitivity genetic instrument (",
       x$instrument,
@@ -244,7 +241,7 @@ print.mr_sensemakr <- function(x, digits = 2, ...){
   }
 }
 
-#' @export
+
 clean_benchmarks <- function(bench, model){
   classes <- sapply(model$model[bench], class)
   change  <- which(classes %in% c("factor", "character"))
@@ -254,7 +251,7 @@ clean_benchmarks <- function(bench, model){
   intersect(bench,names(coef(model)))
 }
 
-#' @export
+
 multiple_bounds <- function(model,
                             covariate,
                             benchmark_covariates,
