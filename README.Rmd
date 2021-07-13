@@ -72,8 +72,7 @@ mr.sense
 plot(mr.sense, 
      benchmark_covariates = list(alc.smok = alc.smok,
                                  pcs = pcs),
-     k = list(alc.smok = 25,
-              pcs = 35))
+     k = list(alc.smok = 1, pcs = 1))
 ```
 
 ## Simulations

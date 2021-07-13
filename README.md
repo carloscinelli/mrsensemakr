@@ -70,29 +70,28 @@ mr.sense
 #>  Missing Data: No missing data found.
 #> 
 #> Traditional MR results (2SLS)
-#>   MR Estimate (95% CI): 0.227 (0.192 - 0.262)
-#>   P-value:  < 2x10^16
+#>   MR Estimate (95% CI): 0.807 (0.111 - 1.503)
+#>   P-value: 0.02317659
 #> 
 #> Sensitivity genetic instrument (prs) -> exposure (exp.trait)
-#>   Partial R2: 1.45%
-#>   RV (alpha = 0.05): 11.03%
+#>   Partial R2: 1%
+#>   RV (alpha = 0.05): 3.71%
 #> 
 #> Sensitivity genetic instrument (prs) -> outcome (out.trait)
-#>   Partial R2: 0.07%
-#>   RV (alpha = 0.05): 2.27%
+#>   Partial R2: 0.65%
+#>   RV (alpha = 0.05): 1.76%
 #> 
 #> Bounds on the maximum explanatory power of omitted variables W, if it were as strong as:
 #>  bound_label r2zw.x r2dw.zx r2yw.zx adjusted_t_exposure adjusted_t_outcome
-#>  1x alc.smok  0.26%   0.01%   0.02%            54.01079           11.89505
-#>       1x pcs  0.25%   0.03%   0.01%            53.79732           12.00196
+#>  1x alc.smok  0.41%   0.05%   0.76%            3.091924            2.34717
+#>       1x pcs  2.27%   3.14%   2.51%            2.309587            1.76642
 
 
 ## sensitivity contour plots
 plot(mr.sense, 
      benchmark_covariates = list(alc.smok = alc.smok,
                                  pcs = pcs),
-     k = list(alc.smok = 25,
-              pcs = 35))
+     k = list(alc.smok = 1, pcs = 1))
 ```
 
 <img src="man/figures/README-example-1.png" width="100%" />
