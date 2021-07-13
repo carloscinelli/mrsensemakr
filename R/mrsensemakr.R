@@ -82,12 +82,12 @@ mr_sensemakr <- function(outcome,
                          alpha = 0.05){
 
   # coerce to data.frame
-  data <- as.data.frame(data)
+  the.data <- as.data.frame(data)
 
   # remove NAs
-  any.na <- any(is.na(data))
+  any.na <- any(is.na(the.data))
   if(any.na){
-    data <- na.omit(data)
+    the.data <- na.omit(the.data)
     warning("Missing values (NA) were found and were omitted from the analysis.")
     NAs <- "Missing data removed from analysis."
   } else {
@@ -96,7 +96,7 @@ mr_sensemakr <- function(outcome,
 
   # check names on data.frame
   all.names <- unique(unlist(c(outcome, exposure,instrument, covariates, benchmark_covariates)))
-  data.names <- names(data)
+  data.names <- names(the.data)
   not.ok <- which(!all.names %in% data.names)
   if (length(not.ok) > 0){
     stop(paste("variables", paste(all.names[not.ok], collapse = ", "), "were not found"))
@@ -131,7 +131,7 @@ mr_sensemakr <- function(outcome,
 
   # first stage
   fs.form      <- make_formula(y = exposure, x = c(instrument, covariates))
-  first.stage  <- lm(fs.form, data = data)
+  first.stage  <- lm(fs.form, data = the.data)
 
   # first stage sensitivity
   fs.sense     <- sense_trait(model      = first.stage,
@@ -163,7 +163,7 @@ mr_sensemakr <- function(outcome,
   # reduced form
 
   rf.form      <- make_formula(y = outcome,  x = c(instrument, covariates))
-  reduced.form <- lm(rf.form, data = data)
+  reduced.form <- lm(rf.form, data = the.data)
 
 
   # reduced form sensitivity
