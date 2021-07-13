@@ -40,28 +40,21 @@ MR-sensemakr
 library(mrsensemakr)
 
 ## simulated data example
-data("sim_data")
+n <- 100
+sim_data <- data.frame(out.trait = rnorm(n), exp.trait = rnorm(n), prs =  rnorm(n))
 
 ## create vectors indicating variable names in the data
 outcome    <- "out.trait" # name of outcome trait
 exposure   <- "exp.trait" # name of exposure trait
 instrument <- "prs" # genetic instrument (e.g, polygenic risk score)
-age.sex    <- c("age", "sex") # age and sex variables (if applicable)
-alc.smok   <- c("alcohol", "smoking") # putative pleoitropic vars.
-pcs        <- paste0("pc", 1:20) # first 20 principal components pc1 ... pc20
 
 ## runs MR sensitivity analysis
 mr.sense <- mr_sensemakr(outcome = outcome,
                         exposure = exposure,
                         instrument = instrument,
-                        covariates = c(age.sex, alc.smok, pcs),
-                        data = sim_data,
-                        benchmark_covariates = list(alc.smok = alc.smok,
-                                                    pcs = pcs))
+                        data = sim_data)
 ## print results
 mr.sense
 ## sensitivity contour plots
-plot(mr.sense,
-    benchmark_covariates = list(alc.smok = alc.smok, pcs = pcs),
-    k = list(alc.smok = 25, pcs = 35))
+plot(mr.sense)
 }

@@ -55,11 +55,11 @@ plot.mr_sensemakr <- function(x,
     }
 
   if(is.null(lim.x)){
-    lim.x <- rv*1.5
+    lim.x <- max(c(rv*1.5, 0.001))
   }
 
   if(is.null(lim.y)){
-    lim.y <- rv*1.5
+    lim.y <- max(c(rv*1.5, 0.001))
   }
 
   xlab <- expression(paste("Partial ", R^2, " of unobservables with gen. instrument"))
