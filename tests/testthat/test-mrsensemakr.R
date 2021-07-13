@@ -5,7 +5,7 @@ test_that("handles NA", {
   na.exp.trait <- sample(n, 20)
   sim_data$out.trait[na.out.trait] <- NA
   sim_data$exp.trait[na.exp.trait] <- NA
-  expect_warning(mr.out <- mr_sensemakr(outcome = "out.trait", exposure = "exp.trait", instrument = "prs", data = sim_data))
+  expect_warning(mr_sensemakr(outcome = "out.trait", exposure = "exp.trait", instrument = "prs", data = sim_data))
 })
 
 
