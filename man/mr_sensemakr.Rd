@@ -40,7 +40,7 @@ MR-sensemakr
 library(mrsensemakr)
 
 ## simulated data example
-data("sim_data", package = "mrsensemakr", overwrite = TRUE, envir = globalenv())
+data("sim_data")
 
 ## create vectors indicating variable names in the data
 outcome    <- "out.trait" # name of outcome trait

@@ -10,6 +10,8 @@ plot.mr_sensemakr <- function(x,
                               lim.y = NULL,
                               ...
                               ){
+  contour.out <- list()
+
   type <- match.arg(type)
 
   model <- switch(type,
@@ -17,6 +19,7 @@ plot.mr_sensemakr <- function(x,
                   exposure = x$exposure$model)
 
   t.value <- coef(summary(model))[x$info$instrument, "t value"]
+
   if(is.null(alpha)){
     alpha <- x$info$alpha
   }
@@ -26,6 +29,7 @@ plot.mr_sensemakr <- function(x,
   dof     <- model$df.residual
   t.thr   <- abs(qt(alpha/2, df = dof - 1))*sign(t.value)
 
+  contour.out$info <- list(type = type, k = k, alpha = alpha, t.thr = t.thr)
 
 
   rv <- x[[type]]$sensitivity$rv
@@ -41,6 +45,8 @@ plot.mr_sensemakr <- function(x,
                                 benchmark_covariates = benchmark_covariates,
                                 k = k,
                                 alpha = alpha)
+
+      contour.out$bounds <- bounds
 
       max.r2dz.x  <- max(c(bounds$r2dz.x*1.5,  1.5*rv))
       max.r2yz.dx <- max(c(bounds$r2yz.dx*1.5, 1.5*rv))
@@ -70,6 +76,8 @@ plot.mr_sensemakr <- function(x,
     ylab <- expression(paste("Partial ", R^2, " of unobservables with exposure trait"))
   }
 
+  contour.out$graphics <- list(lim.x = lim.x, lim.y = lim.y, nlevels = nlevels, xlab = xlab, ylab = ylab)
+
   sensemakr::ovb_contour_plot(model = model,
                               treatment = x$mr$instrument,
                               sensitivity.of = "t-value",
@@ -78,10 +86,15 @@ plot.mr_sensemakr <- function(x,
                               ylab = ylab,
                               lim = lim.x,
                               lim.y = lim.y,
-                              nlevels = nlevels) -> contour.out
+                              nlevels = nlevels) -> contours
+
+  names(contours) <- c("r2zw.x", "r2yw.zx", "value")
+  contour.out$contours <- contours
 
   if(!is.null(benchmark_covariates)){
     sensemakr::add_bound_to_contour(bounds, treatment = x$mr$instrument)
   }
+
+  invisible(contour.out)
 
 }
