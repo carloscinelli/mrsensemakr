@@ -116,11 +116,11 @@ mr_sensemakr <- function(outcome,
   # check benchmark and covariates
   benchmark_covariates_check <- unique(unlist(benchmark_covariates))
   if (is.null(covariates) & !is.null(benchmark_covariates_check)){
-    stop("'benchmark_covariates' must be a subset of 'coviates:' argument `covariates` not provided.")
+    stop("'benchmark_covariates' must be a subset of 'covariates'. Argument `covariates` not provided.")
   }
   bench.not.ok <- which(!benchmark_covariates_check %in% covariates)
   if( length(bench.not.ok) > 0){
-    stop("'benchmark_covariates' must be a subset of 'coviates. Variables not found: ",
+    stop("'benchmark_covariates' must be a subset of 'covariates'. Variables not found: ",
          paste(benchmark_covariates_check[bench.not.ok], collapse = ", "))
   }
 
