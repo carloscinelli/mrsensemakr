@@ -7,10 +7,6 @@
 
 [![Codecov test
 coverage](https://codecov.io/gh/carloscinelli/mrsensemakr/branch/master/graph/badge.svg)](https://codecov.io/gh/carloscinelli/mrsensemakr?branch=master)
-[![Travis build
-status](https://travis-ci.com/carloscinelli/mrsensemakr.svg?branch=master)](https://travis-ci.com/carloscinelli/mrsensemakr)
-[![AppVeyor build
-status](https://ci.appveyor.com/api/projects/status/github/carloscinelli/mrsensemakr?branch=master&svg=true)](https://ci.appveyor.com/project/carloscinelli/mrsensemakr)
 <!-- badges: end -->
 
 The R package `mrsensemakr` implements sensitivity analysis tools for
