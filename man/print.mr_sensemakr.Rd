@@ -15,7 +15,7 @@
 }
 \value{
 The function is called for its side effect of printing to the console.
-  Invisibly returns the input \code{x}.
+ Invisibly returns the input \code{x}.
 }
 \description{
 Prints a summary of the Mendelian Randomization sensitivity analysis,
