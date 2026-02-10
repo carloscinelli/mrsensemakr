@@ -87,7 +87,7 @@ get_betas <- function(y, d, G){
 # Argument R1.a sets j variants to be valid
 # Argument R1.b makes W "k times" stronger than X
 sim <- function(nsim, n = 100, m= 90, gamma = 0.1, eta = gamma, tau = 0,  presso = FALSE,
-                R1.a = F, j = 1, R1.b = F, k = 1, scale = TRUE){
+                R1.a = FALSE, j = 1, R1.b = FALSE, k = 1, scale = TRUE){
   
   eta <- eta
   # initialize output
@@ -193,7 +193,7 @@ sim <- function(nsim, n = 100, m= 90, gamma = 0.1, eta = gamma, tau = 0,  presso
     # MR Presso
     res           <- data.frame(by = b1$by, byse = b1$byse, bx = b2$bd, bxse = b2$bdse)
     output.presso <- mr_presso(BetaOutcome = "by", BetaExposure = "bx", SdOutcome = "byse", SdExposure = "bxse",
-                               OUTLIERtest = T, DISTORTIONtest = F, data = res, NbDistribution = 1000,
+                               OUTLIERtest = TRUE, DISTORTIONtest = FALSE, data = res, NbDistribution = 1000,
                                SignifThreshold = 0.05)
     presso.p.values <- output.presso$`Main MR results`$`P-value`
     p.presso <- presso.p.values[2]
@@ -204,7 +204,7 @@ sim <- function(nsim, n = 100, m= 90, gamma = 0.1, eta = gamma, tau = 0,  presso
   }
   
   #MR-Mix
-  output.mix <- MRMix(betahat_x = b1$bd, betahat_y = b2$by, sx = b1$bdse, sy =b2$byse,profile = F)
+  output.mix <- MRMix(betahat_x = b1$bd, betahat_y = b2$by, sx = b1$bdse, sy =b2$byse,profile = FALSE)
   out$p.mix  <- output.mix$pvalue_theta
   
   ## sensemakr
@@ -229,7 +229,7 @@ sim <- function(nsim, n = 100, m= 90, gamma = 0.1, eta = gamma, tau = 0,  presso
   if(s.t != s.adj_t){
     p.bench <- 1
   } else {
-    p.bench <- pt(abs(adj_t), df = n, lower.tail = F)*2
+    p.bench <- pt(abs(adj_t), df = n, lower.tail = FALSE)*2
   }
   out$p.bench  <- p.bench
   out$rv       <- rv
@@ -246,13 +246,13 @@ sim <- function(nsim, n = 100, m= 90, gamma = 0.1, eta = gamma, tau = 0,  presso
 ####          so simulate once to see how long it takes, and plan accordingly.
 
 ## test run
-# system.time(test <- sim(1, n = 1e5, presso = T, gamma = 0.05, tau = 0))
+# system.time(test <- sim(1, n = 1e5, presso = TRUE, gamma = 0.05, tau = 0))
 
 ## now simulate as many times as you want, with different parameter values
 ## system.time({
 #   sim.out <- grid_search(sim, 
 #                          n.iter = 1000, 
-#                          params = list(n = c(150000, 300000, 450000), gamma = 0.05, tau = c(0, 0.1), presso = T), 
+#                          params = list(n = c(150000, 300000, 450000), gamma = 0.05, tau = c(0, 0.1), presso = TRUE), 
 #                          parallel = "multicore", 
 #                          ncpus = 32
 #   )

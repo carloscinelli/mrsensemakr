@@ -2,7 +2,7 @@
 % Please edit documentation in R/mrsensemakr.R
 \name{mr_sensemakr}
 \alias{mr_sensemakr}
-\title{MR-sensemakr}
+\title{Sensitivity Analysis for Mendelian Randomization}
 \usage{
 mr_sensemakr(
   outcome,
@@ -32,8 +32,21 @@ mr_sensemakr(
 
 \item{alpha}{significance level}
 }
+\value{
+An object of class \code{mr_sensemakr}, which is a list containing:
+\describe{
+  \item{info}{A list with the outcome, exposure, instrument, covariates, alpha level, and missing data information.}
+  \item{exposure}{A list with the first-stage regression model, sensitivity statistics, and (if benchmarks provided) bounds on the bias.}
+  \item{outcome}{A list with the reduced-form regression model, sensitivity statistics, and (if benchmarks provided) bounds on the bias.}
+  \item{mr}{An object of class \code{trad.mr} with the traditional MR (2SLS) estimates.}
+}
+}
 \description{
-MR-sensemakr
+Performs sensitivity analysis for Mendelian Randomization (MR) studies, computing
+robustness values, partial R-squared measures, and bias-adjusted estimates for
+instrumental variable regressions. The method assesses how strong residual biases
+(due to violations of the exclusion restriction) would need to be to invalidate
+the MR findings.
 }
 \examples{
 ## loads package

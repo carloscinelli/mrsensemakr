@@ -4,9 +4,10 @@
 # MR-SENSEMAKR
 
 <!-- badges: start -->
-
-[![Codecov test
-coverage](https://codecov.io/gh/carloscinelli/mrsensemakr/branch/master/graph/badge.svg)](https://codecov.io/gh/carloscinelli/mrsensemakr?branch=master)
+<!-- [![CRAN status](https://www.r-pkg.org/badges/version/mrsensemakr)](https://CRAN.R-project.org/package=mrsensemakr) -->
+<!-- [![CRAN downloads](https://cranlogs.r-pkg.org/badges/mrsensemakr)](https://CRAN.R-project.org/package=mrsensemakr) -->
+[![R-CMD-check](https://github.com/carloscinelli/mrsensemakr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/carloscinelli/mrsensemakr/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/carloscinelli/mrsensemakr/branch/master/graph/badge.svg)](https://app.codecov.io/gh/carloscinelli/mrsensemakr)
 <!-- badges: end -->
 
 The R package `mrsensemakr` implements sensitivity analysis tools for

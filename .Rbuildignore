@@ -1,6 +1,16 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^README\.Rmd$
+^LICENSE\.md$
+^NEWS\.md$
+^cran-comments\.md$
+^\.github$
 ^codecov\.yml$
 ^\.travis\.yml$
 ^appveyor\.yml$
+^CRAN-RELEASE$
+^CRAN-SUBMISSION$
+^_pkgdown\.yml$
+^pkgdown$
+^docs$
+^plan\.md$

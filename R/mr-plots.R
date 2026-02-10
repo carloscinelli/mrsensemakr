@@ -1,4 +1,28 @@
-
+##' Sensitivity contour plots for MR analysis
+##'
+##' Produces sensitivity contour plots for the outcome or exposure regressions
+##' of a Mendelian Randomization analysis. Contours show the t-value of the
+##' instrument coefficient as a function of hypothetical partial R-squared values
+##' of unobserved variables with both the instrument and the outcome (or exposure).
+##'
+##'@param x an object of class \code{mr_sensemakr}.
+##'@param type character. Whether to plot the sensitivity contours for the
+##'  \code{"outcome"} (reduced-form) or \code{"exposure"} (first-stage) regression.
+##'  Default is \code{"outcome"}.
+##'@param benchmark_covariates covariates for benchmarking. Must be a named list
+##'  of character vectors specifying groups of covariates to use as benchmarks
+##'  for bounding the plausible strength of unobserved confounders.
+##'@param k numeric vector or named list. Parameterizes how many times stronger
+##'  residual biases are in comparison to the observed benchmark covariates.
+##'@param alpha significance level for the sensitivity analysis. If \code{NULL},
+##'  uses the alpha from the original \code{mr_sensemakr} call.
+##'@param nlevels number of contour levels.
+##'@param lim.x limit of the x-axis.
+##'@param lim.y limit of the y-axis.
+##'@param ... additional arguments passed to plotting functions.
+##'
+##'@return Invisibly returns a list with contour data, bounds, and graphical parameters.
+##'
 ##'@export
 plot.mr_sensemakr <- function(x,
                               type = c("outcome", "exposure"),
