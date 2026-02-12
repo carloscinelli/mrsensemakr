@@ -41,7 +41,7 @@ jobs:
       - uses: codecov/codecov-action@v4
         with:
           file: ./cobertura.xml
-          fail_ci_if_error: ${{ github.event_name != 'pull_request' }}
+          fail_ci_if_error: false
           token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Show testthat output
