@@ -19,6 +19,8 @@ The function is called for its side effect of printing to the console.
 }
 \description{
 Prints a summary of the Mendelian Randomization sensitivity analysis,
-including traditional MR estimates, sensitivity statistics for the
-exposure and outcome regressions, and (if available) benchmark bounds.
+including traditional MR estimates, sensitivity statistics (partial
+R-squared and robustness value) for the genetic associations with the
+exposure and outcome traits, and (if available) benchmark bounds on the
+maximum explanatory power of unmeasured variables.
 }

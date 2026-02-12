@@ -37,27 +37,29 @@ print.sense_trait <- function(x, digits = 4, ...){
 
 ##' Sensitivity Analysis for Mendelian Randomization
 ##'
-##' Performs sensitivity analysis for Mendelian Randomization (MR) studies, computing
-##' robustness values, partial R-squared measures, and bias-adjusted estimates for
-##' instrumental variable regressions. The method assesses how strong residual biases
-##' (due to violations of the exclusion restriction) would need to be to invalidate
-##' the MR findings.
+##' Performs sensitivity analysis for Mendelian Randomization (MR) studies.
+##' The method quantifies the robustness of MR findings to potential violations
+##' of the MR assumptions due to residual population stratification, batch effects
+##' and horizontal pleiotropy. It computes sensitivity statistics---the partial
+##' R-squared of the genetic instrument with the exposure and outcome traits, and
+##' the robustness value---that reveal the minimal strength that unmeasured
+##' variables \code{W} would need to have to explain away the MR results.
 ##'
 ##'@param outcome A character vector with the name of the outcome trait.
 ##'@param exposure A character vector with the name of the exposure trait.
-##'@param instrument A character vector with the name of the genetic instrument.
+##'@param instrument A character vector with the name of the genetic instrument (e.g., a polygenic risk score).
 ##'@param covariates A character vector with the name of the control covariates, such as age, sex, genomic principal components, batch effect dummies and putative pleiotropic pathways.
 ##'@param data An object of the class data.frame containing the variables used in the analysis.
-##'@param benchmark_covariates Covariates for benchmarking. Must be a subset of the \code{covariates} argument. The user has two options: (i) character vector of the names of covariates that will be used to bound the plausible strength of the unobserved confounders. Each variable will be considered separately; (ii) a named list with character vector names of covariates that will be used, as a group, to bound the plausible strength of the unobserved confounders. The names of the list will be used for the benchmark labels.
+##'@param benchmark_covariates Covariates for benchmarking. Must be a subset of the \code{covariates} argument. The user has two options: (i) character vector of the names of covariates that will be used to bound the plausible strength of the unmeasured variables. Each variable will be considered separately; (ii) a named list with character vector names of covariates that will be used, as a group, to bound the plausible strength of the unmeasured variables. The names of the list will be used for the benchmark labels.
 ##'
-##'@param k numeric vector. Parameterizes how many times stronger residual biases are related to the treatment and the outcome in comparison to the observed benchmark covariates.
-##'@param alpha significance level
+##'@param k numeric vector. Parameterizes how many times stronger the unmeasured variables are, in explaining the genetic instrument and the exposure/outcome traits, in comparison to the observed benchmark covariates.
+##'@param alpha significance level.
 ##'
 ##'@return An object of class \code{mr_sensemakr}, which is a list containing:
 ##' \describe{
 ##'   \item{info}{A list with the outcome, exposure, instrument, covariates, alpha level, and missing data information.}
-##'   \item{exposure}{A list with the first-stage regression model, sensitivity statistics, and (if benchmarks provided) bounds on the bias.}
-##'   \item{outcome}{A list with the reduced-form regression model, sensitivity statistics, and (if benchmarks provided) bounds on the bias.}
+##'   \item{exposure}{A list with the regression model for the genetic association with the exposure, along with its sensitivity statistics and (if benchmarks provided) bounds on the bias.}
+##'   \item{outcome}{A list with the regression model for the genetic association with the outcome, along with its sensitivity statistics and (if benchmarks provided) bounds on the bias.}
 ##'   \item{mr}{An object of class \code{trad.mr} with the traditional MR (2SLS) estimates.}
 ##' }
 ##'
@@ -234,8 +236,10 @@ mr_sensemakr <- function(outcome,
 ##' Print results of MR sensitivity analysis
 ##'
 ##' Prints a summary of the Mendelian Randomization sensitivity analysis,
-##' including traditional MR estimates, sensitivity statistics for the
-##' exposure and outcome regressions, and (if available) benchmark bounds.
+##' including traditional MR estimates, sensitivity statistics (partial
+##' R-squared and robustness value) for the genetic associations with the
+##' exposure and outcome traits, and (if available) benchmark bounds on the
+##' maximum explanatory power of unmeasured variables.
 ##'
 ##'@param x an object of class \code{mr_sensemakr}.
 ##'@param digits number of digits to round results to.

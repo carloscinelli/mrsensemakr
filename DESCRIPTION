@@ -5,12 +5,13 @@ Version: 0.3.0
 Authors@R: c(
     person("Carlos", "Cinelli", role = c("aut", "cre"), email = "carloscinelli@hotmail.com")
     )
-Description: Implements sensitivity analysis tools for Mendelian Randomization,
-    as discussed in Cinelli et al. (2020) <doi:10.1101/2020.10.21.347773>.
-    Provides functions for computing sensitivity statistics, robustness values,
-    and bias-adjusted estimates for instrumental variable analyses, along with
-    sensitivity contour plots for visualizing the impact of potential violations
-    of the exclusion restriction.
+Description: Implements sensitivity analysis tools for Mendelian Randomization
+    (MR), as discussed in Cinelli et al. (2022) <doi:10.1038/s41467-022-28553-9>.
+    The package provides sensitivity statistics for quantifying the robustness of
+    MR findings to potential violations due to residual population stratification,
+    batch effects and horizontal pleiotropy, including the partial R-squared of the
+    genetic instrument with the exposure and outcome traits, robustness values, and
+    sensitivity contour plots.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

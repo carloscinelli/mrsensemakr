@@ -20,15 +20,15 @@
 \item{x}{an object of class \code{mr_sensemakr}.}
 
 \item{type}{character. Whether to plot the sensitivity contours for the
-\code{"outcome"} (reduced-form) or \code{"exposure"} (first-stage) regression.
-Default is \code{"outcome"}.}
+genetic association with the \code{"outcome"} trait or the \code{"exposure"}
+trait. Default is \code{"outcome"}.}
 
 \item{benchmark_covariates}{covariates for benchmarking. Must be a named list
 of character vectors specifying groups of covariates to use as benchmarks
-for bounding the plausible strength of unobserved confounders.}
+for bounding the plausible strength of unmeasured variables.}
 
 \item{k}{numeric vector or named list. Parameterizes how many times stronger
-residual biases are in comparison to the observed benchmark covariates.}
+the unmeasured variables are in comparison to the observed benchmark covariates.}
 
 \item{alpha}{significance level for the sensitivity analysis. If \code{NULL},
 uses the alpha from the original \code{mr_sensemakr} call.}
@@ -45,8 +45,9 @@ uses the alpha from the original \code{mr_sensemakr} call.}
 Invisibly returns a list with contour data, bounds, and graphical parameters.
 }
 \description{
-Produces sensitivity contour plots for the outcome or exposure regressions
-of a Mendelian Randomization analysis. Contours show the t-value of the
-instrument coefficient as a function of hypothetical partial R-squared values
-of unobserved variables with both the instrument and the outcome (or exposure).
+Produces sensitivity contour plots for the genetic association with the
+outcome or exposure trait of a Mendelian Randomization analysis. Contours
+display how the t-value of the genetic association changes as a function
+of hypothetical partial R-squared values of unmeasured variables \code{W}
+with both the genetic instrument and the outcome (or exposure) trait.
 }
