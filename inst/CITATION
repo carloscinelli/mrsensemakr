@@ -1,0 +1,15 @@
+bibentry(
+  bibtype  = "Article",
+  title    = "Robust Mendelian Randomization in the Presence of Residual Population Stratification, Batch Effects and Horizontal Pleiotropy",
+  author   = c(
+    person("Carlos", "Cinelli"),
+    person("Nathan", "LaPierre"),
+    person("Brian L.", "Hill"),
+    person("Sriram", "Sankararaman"),
+    person("Eleazar", "Eskin")
+  ),
+  journal  = "bioRxiv",
+  year     = "2020",
+  doi      = "10.1101/2020.10.21.347773",
+  header   = "To cite mrsensemakr in publications use:"
+)

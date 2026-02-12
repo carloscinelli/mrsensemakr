@@ -35,8 +35,13 @@ print.sense_trait <- function(x, digits = 4, ...){
       sep ="")
 }
 
-##' MR-sensemakr
+##' Sensitivity Analysis for Mendelian Randomization
 ##'
+##' Performs sensitivity analysis for Mendelian Randomization (MR) studies, computing
+##' robustness values, partial R-squared measures, and bias-adjusted estimates for
+##' instrumental variable regressions. The method assesses how strong residual biases
+##' (due to violations of the exclusion restriction) would need to be to invalidate
+##' the MR findings.
 ##'
 ##'@param outcome A character vector with the name of the outcome trait.
 ##'@param exposure A character vector with the name of the exposure trait.
@@ -47,6 +52,14 @@ print.sense_trait <- function(x, digits = 4, ...){
 ##'
 ##'@param k numeric vector. Parameterizes how many times stronger residual biases are related to the treatment and the outcome in comparison to the observed benchmark covariates.
 ##'@param alpha significance level
+##'
+##'@return An object of class \code{mr_sensemakr}, which is a list containing:
+##' \describe{
+##'   \item{info}{A list with the outcome, exposure, instrument, covariates, alpha level, and missing data information.}
+##'   \item{exposure}{A list with the first-stage regression model, sensitivity statistics, and (if benchmarks provided) bounds on the bias.}
+##'   \item{outcome}{A list with the reduced-form regression model, sensitivity statistics, and (if benchmarks provided) bounds on the bias.}
+##'   \item{mr}{An object of class \code{trad.mr} with the traditional MR (2SLS) estimates.}
+##' }
 ##'
 ##'@examples
 ##' ## loads package
@@ -218,6 +231,19 @@ mr_sensemakr <- function(outcome,
   return(out)
 }
 
+##' Print results of MR sensitivity analysis
+##'
+##' Prints a summary of the Mendelian Randomization sensitivity analysis,
+##' including traditional MR estimates, sensitivity statistics for the
+##' exposure and outcome regressions, and (if available) benchmark bounds.
+##'
+##'@param x an object of class \code{mr_sensemakr}.
+##'@param digits number of digits to round results to.
+##'@param ... additional arguments passed to other print methods.
+##'
+##'@return The function is called for its side effect of printing to the console.
+##'  Invisibly returns the input \code{x}.
+##'
 ##'@export
 print.mr_sensemakr <- function(x, digits = 2, ...){
   cat("Sensitivity Analysis for Mendelian Randomization (MR)\n", sep ="")

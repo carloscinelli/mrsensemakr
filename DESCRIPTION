@@ -1,19 +1,27 @@
 Package: mrsensemakr
 Type: Package
-Title: Sensitivity Analysis Tools for Mendelian Randomization 
-Version: 0.3
-Author: Carlos Cinelli,
-Maintainer: Carlos Cinelli <carloscinelli@hotmail.com>
-Description: The R package mrsensemakr implements sensitivity analysis tools for Mendelian Randomization.
+Title: Sensitivity Analysis Tools for Mendelian Randomization
+Version: 0.3.0
+Authors@R: c(
+    person("Carlos", "Cinelli", role = c("aut", "cre"), email = "carloscinelli@hotmail.com")
+    )
+Description: Implements sensitivity analysis tools for Mendelian Randomization,
+    as discussed in Cinelli et al. (2020) <doi:10.1101/2020.10.21.347773>.
+    Provides functions for computing sensitivity statistics, robustness values,
+    and bias-adjusted estimates for instrumental variable analyses, along with
+    sensitivity contour plots for visualizing the impact of potential violations
+    of the exclusion restriction.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
+URL: https://github.com/carloscinelli/mrsensemakr
+BugReports: https://github.com/carloscinelli/mrsensemakr/issues
 Imports:
     sensemakr
-Depends: 
-    R (>= 2.10)
-RoxygenNote: 7.1.1
-Suggests: 
+Depends:
+    R (>= 3.5.0)
+RoxygenNote: 7.3.1
+Suggests:
     knitr,
     rmarkdown,
     testthat (>= 3.0.0),

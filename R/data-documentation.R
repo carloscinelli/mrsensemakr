@@ -1,10 +1,25 @@
 
 # Data Documentation ------------------------------------------------------
 
-#' Simulated Data
+#' Simulated Data for MR Sensitivity Analysis
+#'
+#' A simulated dataset for illustrating Mendelian Randomization sensitivity
+#' analysis. The data contain an outcome trait, an exposure trait, a polygenic
+#' risk score (PRS) used as a genetic instrument, demographic covariates,
+#' putative pleiotropic pathways, and genomic principal components.
 #'
 #' @docType data
 #' @keywords dataset
-#' @format A data frame with 200,000 observations and 27 variables.
+#' @format A data frame with 200,000 observations and 27 variables:
+#' \describe{
+#'   \item{out.trait}{Outcome trait.}
+#'   \item{exp.trait}{Exposure trait.}
+#'   \item{prs}{Polygenic risk score used as a genetic instrument.}
+#'   \item{age}{Age of the individual.}
+#'   \item{sex}{Sex of the individual.}
+#'   \item{alcohol}{Alcohol consumption (putative pleiotropic pathway).}
+#'   \item{smoking}{Smoking status (putative pleiotropic pathway).}
+#'   \item{pc1, pc2, pc3, pc4, pc5, pc6, pc7, pc8, pc9, pc10, pc11, pc12, pc13, pc14, pc15, pc16, pc17, pc18, pc19, pc20}{Genomic principal components 1 through 20.}
+#' }
 #' @name sim_data
 NULL

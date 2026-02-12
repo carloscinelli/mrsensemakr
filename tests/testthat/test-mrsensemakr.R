@@ -1,10 +1,4 @@
 test_that("alpha", {
-  # cleans workspace
-  rm(list = ls())
-
-  # loads package
-  library(mrsensemakr)
-  library(testthat)
 
   ## simulated data example
   data("sim_data")
@@ -35,19 +29,12 @@ test_that("alpha", {
                               alpha = 0.01,
                               benchmark_covariates = list(alc.smok = alc.smok,
                                                           pcs = pcs))
-  expect_equal(mr.sense.01$outcome$sensitivity$rv, 0, ignore_attr=T)
-  expect_equal(mr.sense.05$outcome$sensitivity$rv, 0.0176069377, ignore_attr=T)
+  expect_equal(mr.sense.01$outcome$sensitivity$rv, 0, ignore_attr=TRUE)
+  expect_equal(mr.sense.05$outcome$sensitivity$rv, 0.0176069377, ignore_attr=TRUE)
 })
 
 test_that("sign and alpha for plots",
           {
-            # cleans workspace
-            rm(list = ls())
-
-            # loads pacakges
-            library(mrsensemakr)
-            library(testthat)
-
             ## simulated data example
             data("sim_data")
 
@@ -89,10 +76,10 @@ test_that("sign and alpha for plots",
             expect_equal(check_plot3$info$t.thr, -1.6464212)
 
             check_plot4 <- plot(mr.sense.neg)
-            expect_equal(check_plot4$graphics$lim.x, mr.sense.neg$outcome$sensitivity$rv*1.5, ignore_attr = T)
+            expect_equal(check_plot4$graphics$lim.x, mr.sense.neg$outcome$sensitivity$rv*1.5, ignore_attr = TRUE)
 
             check_plot5 <- plot(mr.sense.neg, type = "exposure")
-            expect_equal(check_plot5$graphics$lim.x, mr.sense.neg$exposure$sensitivity$rv*1.5, ignore_attr = T)
+            expect_equal(check_plot5$graphics$lim.x, mr.sense.neg$exposure$sensitivity$rv*1.5, ignore_attr = TRUE)
 
             expect_error(plot(mr.sense.neg, alpha = -0.1))
 
@@ -100,12 +87,6 @@ test_that("sign and alpha for plots",
           )
 
 test_that("NA",{
-  # cleans workspace
-  rm(list = ls())
-
-  # loads pacakges
-  library(mrsensemakr)
-  library(testthat)
 
   ## simulated data example
   data("sim_data")
@@ -138,11 +119,6 @@ test_that("NA",{
 })
 
 test_that("errors", {
-  rm(list = ls())
-
-  # loads pacakges
-  library(mrsensemakr)
-  library(testthat)
 
   ## simulated data example
   data("sim_data")
@@ -237,6 +213,6 @@ test_that("errors", {
   expect_error(plot(mr.sense.neg, alpha = -0.1))
   expect_error(plot(mr.sense.neg, alpha = 1.1))
 
-  file.remove("Rplots.pdf")
+  unlink("Rplots.pdf")
 
 })
